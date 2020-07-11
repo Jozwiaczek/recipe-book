@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {FormRecipe, IRecipe, RecipeService} from '../../services/RecipeService';
-import {RecipeCreateModal} from './RecipeCreateModal';
+import {IFormRecipe, IRecipe, RecipeService} from '../../services/RecipeService';
 import {Add} from '@styled-icons/material';
 import {IconButton} from '../elements/buttons/IconButton';
 import {List} from '../elements/list/List';
+import {RecipeModal} from '../elements/modals/RecipeModal';
 
 const headers = [
   {
@@ -26,8 +26,10 @@ const headers = [
 ];
 
 export const RecipeList: React.FC = () => {
-  const [isCreateModal, setCreateModal] = useState<boolean>(false);
   const recipeService = new RecipeService();
+  const [isCreateModalVisible, setCreateModal] = useState<boolean>(false);
+  const [isEditModalVisible, setEditModal] = useState<boolean>(false);
+  const [currentlyEditedRecipe, setEditedRecipe] = useState<Partial<IFormRecipe> | undefined>();
   const [recipes, setRecipes] = useState<Array<IRecipe>>(recipeService.getRecipes());
   const [refresh, setRefresh] = React.useState<boolean>(false);
 
@@ -36,20 +38,35 @@ export const RecipeList: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
 
-  const openCreateRecipe = () => {
+  const openEditRecipe = (recipe: IFormRecipe): void => {
+    setEditedRecipe(recipe);
+    setEditModal(true);
+  };
+
+  const onCloseEditRecipe = (): void => {
+    setEditModal(false);
+    setEditedRecipe(undefined);
+  };
+
+  const onEditRecipe = (recipe: IFormRecipe): void => {
+    recipeService.editRecipe(recipe);
+    setRefresh(prev => !prev);
+  };
+
+  const openCreateRecipe = (): void => {
     setCreateModal(true);
   };
 
-  const closeCreateRecipe = () => {
+  const onCloseCreateRecipe = (): void => {
     setCreateModal(false);
   };
 
-  const onSubmit = (recipe: FormRecipe) => {
+  const onCreateRecipe = (recipe: IFormRecipe): void => {
     recipeService.createRecipe(recipe);
     setRefresh(prev => !prev);
   };
 
-  const removeRecipe = (recipeId: string) => {
+  const removeRecipe = (recipeId: string): void => {
     recipeService.removeRecipe(recipeId);
     setRefresh(prev => !prev);
   };
@@ -62,20 +79,38 @@ export const RecipeList: React.FC = () => {
 
   return (
     <>
-      <Blur isBlurred={isCreateModal}>
+      <Blur isBlurred={isCreateModalVisible}>
         {recipes.length > 0
           ? <>
             <ActionsSection>
               <CreateButton/>
             </ActionsSection>
-            <List title='Recipes' headers={headers} recipes={recipes} removeRecipe={removeRecipe}/>
+            <List
+              title='Recipes'
+              headers={headers}
+              recipes={recipes}
+              removeRecipe={removeRecipe}
+              openEditRecipe={openEditRecipe}
+            />
           </>
           : <EmptyListContainer>
             <EmptyTitle>No results found</EmptyTitle>
             <CreateButton/>
           </EmptyListContainer>}
       </Blur>
-      <RecipeCreateModal isVisible={isCreateModal} closeModal={closeCreateRecipe} onSubmit={onSubmit}/>
+      <RecipeModal
+        formTitle='Create Recipe'
+        closeModal={onCloseCreateRecipe}
+        onSubmit={onCreateRecipe}
+        isVisible={isCreateModalVisible}
+      />
+      <RecipeModal
+        formTitle='Edit Recipe'
+        closeModal={onCloseEditRecipe}
+        onSubmit={onEditRecipe}
+        isVisible={isEditModalVisible}
+        initialValues={currentlyEditedRecipe}
+      />
     </>
   );
 };

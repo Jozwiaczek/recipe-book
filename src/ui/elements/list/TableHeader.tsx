@@ -29,7 +29,7 @@ const TableHeader: FC<TableHeaderProps> = ({headers}) => {
 export default TableHeader;
 
 const HeaderRow = styled(Row)`
-  font-weight: 500;
+  font-weight: 600;
   text-transform: capitalize;
   border-bottom: 2px solid ${props => props.theme.palette.divider};
 `;

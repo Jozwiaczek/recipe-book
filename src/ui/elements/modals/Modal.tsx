@@ -1,7 +1,7 @@
 import React, {ReactNode, useEffect, useCallback, FC} from 'react';
 import {createPortal} from 'react-dom';
 import {Close} from '@styled-icons/material';
-import {styled} from './layout/Theme';
+import {styled} from '../layout/Theme';
 
 export interface ModalProps {
   isVisible: boolean;

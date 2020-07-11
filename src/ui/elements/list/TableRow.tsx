@@ -1,24 +1,39 @@
 import React, {FC} from 'react';
 import {IconButton} from '../buttons/IconButton';
 import {DeleteForever, ExpandLess, KeyboardArrowDown} from '@styled-icons/material';
-import {IRecipe} from '../../../services/RecipeService';
+import {IFormRecipe, IRecipe} from '../../../services/RecipeService';
 import {styled} from '../layout/Theme';
 
 interface TableRowProps {
   recipe: IRecipe;
   removeRecipe: (recipeId: string) => void;
+  openEditRecipe: (recipe: IFormRecipe) => void;
 }
 
-export const TableRow: FC<TableRowProps> = ({removeRecipe, recipe}) => {
+export const TableRow: FC<TableRowProps> = ({removeRecipe, recipe, openEditRecipe}) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+
+  const onRowClick = (): void => {
+    openEditRecipe(recipe);
+  };
+
+  const onExpandButtonClick = (e: React.MouseEvent): void => {
+    e.stopPropagation();
+    setIsOpen(prevState => !prevState);
+  };
+
+  const onRemoveButtonClick = (e: React.MouseEvent): void => {
+    e.stopPropagation();
+    removeRecipe(recipe.id);
+  };
 
   return (
     <>
-      <Row open={isOpen}>
+      <Row open={isOpen} onClick={onRowClick}>
         <ExpandButtonCell>
           {isOpen
-            ? <ArrowUpIcon onClick={() => setIsOpen(prevState => !prevState)} size='24'/>
-            : <ArrowDownIcon onClick={() => setIsOpen(prevState => !prevState)} size='24'/>
+            ? <ArrowUpIcon onClick={onExpandButtonClick} size='24'/>
+            : <ArrowDownIcon onClick={onExpandButtonClick} size='24'/>
           }
         </ExpandButtonCell>
 
@@ -35,7 +50,7 @@ export const TableRow: FC<TableRowProps> = ({removeRecipe, recipe}) => {
         </Cell>
 
         <Cell>
-          <IconButton color='secondary' onClick={() => removeRecipe(recipe.id)}>
+          <IconButton color='secondary' onClick={onRemoveButtonClick}>
             <DeleteForever size='24'/>
             Remove
           </IconButton>
@@ -44,14 +59,25 @@ export const TableRow: FC<TableRowProps> = ({removeRecipe, recipe}) => {
 
       <CollapseRow open={isOpen}>
         <CollapseCell colSpan={5}>
-          {recipe.ingredients?.map((ingredient, key) => (
-            <p key={key}>{ingredient.name}</p>
-          ))}
+          <IngredientsListTitle>Ingredients</IngredientsListTitle>
+          <IngredientsList>
+            {recipe.ingredients?.map((ingredient, key) => (
+              <li key={key}>{ingredient.name}</li>
+            ))}
+          </IngredientsList>
         </CollapseCell>
       </CollapseRow>
     </>
   );
 };
+
+const IngredientsListTitle = styled.p`
+  font-weight: 500;
+`;
+
+const IngredientsList = styled.ul`
+  padding-left: 20px;
+`;
 
 interface IRow {
   open?: boolean;

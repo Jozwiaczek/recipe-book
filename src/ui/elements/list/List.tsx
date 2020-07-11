@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import TableHeader from './TableHeader';
-import {IRecipe} from '../../../services/RecipeService';
+import {IFormRecipe, IRecipe} from '../../../services/RecipeService';
 import {TableRow} from './TableRow';
 import {styled} from '../layout/Theme';
 
@@ -14,9 +14,16 @@ interface CustomTableProps {
   recipes: Array<IRecipe>;
   removeRecipe: (recipeId: string) => void;
   headers: Array<IHeader>;
+  openEditRecipe: (recipe: IFormRecipe) => void;
 }
 
-export const List: FC<CustomTableProps> = ({headers, title, recipes, removeRecipe}) => {
+export const List: FC<CustomTableProps> = ({
+  headers,
+  title,
+  recipes,
+  removeRecipe,
+  openEditRecipe
+}) => {
   return (
     <Wrapper>
       <Card>
@@ -25,7 +32,12 @@ export const List: FC<CustomTableProps> = ({headers, title, recipes, removeRecip
           <TableHeader headers={headers}/>
           <tbody>
             {recipes.map((recipe, key: number) => (
-              <TableRow key={key} recipe={recipe} removeRecipe={removeRecipe}/>
+              <TableRow
+                key={key}
+                recipe={recipe}
+                removeRecipe={removeRecipe}
+                openEditRecipe={openEditRecipe}
+              />
             ))}
           </tbody>
         </Table>

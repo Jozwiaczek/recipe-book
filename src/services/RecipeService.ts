@@ -12,7 +12,7 @@ export interface IRecipe {
   updatedAt: Date;
 }
 
-export interface FormRecipe {
+export interface IFormRecipe {
   id?: string;
   title: string;
   ingredients: Array<Ingredient>;
@@ -40,7 +40,7 @@ export class RecipeService {
     return recipe;
   }
 
-  editRecipe(recipe: IRecipe): IRecipe {
+  editRecipe(recipe: IFormRecipe): IRecipe {
     const recipes = this.getRecipes();
 
     let isChanged = false;
@@ -69,7 +69,7 @@ export class RecipeService {
     localStorage.setItem('recipes', JSON.stringify(newRecipes));
   }
 
-  createRecipe(recipe: FormRecipe): IRecipe {
+  createRecipe(recipe: IFormRecipe): IRecipe {
     const recipes = this.getRecipes();
 
     recipes.map(storedRecipe => {

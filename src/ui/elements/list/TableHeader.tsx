@@ -1,5 +1,5 @@
-import React from 'react';
-import {styled} from './layout/Theme';
+import React, {FC} from 'react';
+import {styled} from '../layout/Theme';
 import {Row} from './TableRow';
 
 interface Header {
@@ -12,7 +12,7 @@ interface TableHeaderProps {
   headers: Array<Header>;
 }
 
-const TableHeader = ({headers}: TableHeaderProps) => {
+const TableHeader: FC<TableHeaderProps> = ({headers}) => {
   return (
     <thead>
       <HeaderRow>

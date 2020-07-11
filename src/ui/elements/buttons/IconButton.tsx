@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {Button} from './Button';
-import {styled} from './layout/Theme';
+import {styled} from '../layout/Theme';
 
 interface IconButtonProps {
   color?: string;
@@ -8,7 +8,7 @@ interface IconButtonProps {
   children: React.ReactNode;
 }
 
-export const IconButton = ({color, onClick, children}: IconButtonProps) => {
+export const IconButton: FC<IconButtonProps> = ({color, onClick, children}) => {
   return (
     <Button color={color} onClick={onClick}>
       <ButtonContent>

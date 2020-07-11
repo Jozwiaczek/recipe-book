@@ -1,116 +1,98 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {Field, Form} from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import {FieldArray} from 'react-final-form-arrays';
 import TextInput from '../elements/forms/TextInput';
 import {FormRecipe} from '../../services/RecipeService';
-import styled from 'styled-components';
+import {Button} from '../elements/buttons/Button';
+import {Modal} from '../elements/Modal';
+import {IngredientField} from '../elements/forms/IngredientField';
 
 interface RecipeCreateModalProps {
   onSubmit: (recipe: FormRecipe) => void;
+  isVisible: boolean;
   closeModal: () => void;
 }
 
-const required = (value: string|undefined) => (value ? undefined : 'Required');
-
-export const RecipeCreateModal = ({onSubmit, closeModal}: RecipeCreateModalProps) => {
+export const RecipeCreateModal: FC<RecipeCreateModalProps> = ({onSubmit, isVisible, closeModal}) => {
   return (
-    <Modal>
+    <Modal isVisible={isVisible} onClose={closeModal}>
       <h1>Create Recipe</h1>
       <Form
         onSubmit={onSubmit}
         mutators={{
           ...arrayMutators
         }}
+        validate={(values) => {
+          const errors = {} as FormRecipe;
+          const requiredMessage = 'Required';
+          if (!values.title) {
+            errors.title = requiredMessage;
+          }
+
+          return errors;
+        }}
         render={({
           handleSubmit,
           form: {
-            mutators: {push, pop}
+            mutators: {push}
           },
           pristine,
           form,
-          submitting
+          submitting,
+          values
         }) => (
           <form onSubmit={handleSubmit}>
-            <div>
-              <label>Title</label>
-              <Field<string>
-                name="title"
-                component={TextInput}
-                placeholder="Recipe Title"
-              />
-            </div>
+            <Field<string>
+              name="title"
+              component={TextInput}
+              placeholder="Recipe Title"
+            />
             <br/>
-            <br/>
-            <button onClick={() => push('ingredients', undefined)}>
-                Add Ingredient
-            </button>
-            <br/>
-            <FieldArray name="ingredients">
-              {({fields}) =>
-                fields.map((name, index) => (
-                  <div key={name}>
-                    <label>{index + 1}</label>
-                    <br/>
-                    <Field name={`${name}.name`} validate={required}>
-                      {({input, meta}) => (
-                        <div>
-                          <label>Name</label>
-                          <input {...input} type="text" placeholder="Name"/>
-                          {meta.error && meta.touched && <span>{meta.error}</span>}
-                        </div>
-                      )}
-                    </Field>
-                    <span
-                      onClick={() => fields.remove(index)}
-                      style={{cursor: 'pointer'}}
-                    >
-                      ❌
-                    </span>
-                    <br/>
-                    <br/>
-                  </div>
-                ))
-              }
-            </FieldArray>
+            {
+              values.ingredients?.length > 0
+                ? <FieldArray name="ingredients">
+                  {({fields}) =>
+                    fields.map((name, key) => {
+                      const index = key + 1;
+                      return (
+                        <IngredientField
+                          key={key}
+                          name={name}
+                          addItem={() => push('ingredients', undefined)}
+                          removeItem={() => fields.remove(key)}
+                          index={index}
+                          itemsSize={fields.length}
+                        />
+                      );
+                    })
+                  }
+                </FieldArray>
+                : <Button
+                  color='primary'
+                  disabled={submitting || pristine}
+                  onClick={() => push('ingredients', undefined)}
+                  style={{cursor: 'pointer'}}
+                >
+                      Add Ingredients
+                </Button>
+            }
             <br/>
             <br/>
             <br/>
             <div className="buttons">
-              <button type="submit" disabled={submitting || pristine}>
-                      Submit
-              </button>
-              <button
-                type="button"
-                onClick={() => form.reset()}
+              <Button type="submit" color='primary' disabled={submitting || pristine}>Submit</Button>
+              <Button
+                color='secondary'
                 disabled={submitting || pristine}
+                onClick={() => form.reset()}
               >
-                      Reset
-              </button>
+                  Reset
+              </Button>
             </div>
           </form>
         )}
       />
-      <button onClick={closeModal}>Close</button>
     </Modal>
   );
 };
-
-const Modal = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  min-width: 250px;
-  max-width: 500px;
-  height: 40vh;
-  margin: auto;
-  -webkit-box-shadow: 0 -2px 25px 0 rgba(0, 0, 0, 0.15), 0 13px 25px 0 rgba(0, 0, 0, 0.3);
-  background-color: #FFFFFF;
-`;

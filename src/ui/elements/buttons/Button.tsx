@@ -1,4 +1,4 @@
-import {styled} from './layout/Theme';
+import {styled} from '../layout/Theme';
 
 interface IButton {
   color?: string;
@@ -75,8 +75,8 @@ export const Button = styled.button<IButton>`
     top: 50%;
     border-radius: 50%;
     padding: 50%;
-    width: 32px; /* Safari */
-    height: 32px; /* Safari */
+    width: 32px;
+    height: 32px;
     background-color: #fff;
     opacity: 0;
     transform: translate(-50%, -50%) scale(1);

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {FC} from 'react';
 import TableHeader from './TableHeader';
-import {IRecipe} from '../../services/RecipeService';
+import {IRecipe} from '../../../services/RecipeService';
 import {TableRow} from './TableRow';
-import {styled} from './layout/Theme';
+import {styled} from '../layout/Theme';
 
 const headers = [
   {
@@ -28,15 +28,16 @@ const headers = [
 ];
 
 interface CustomTableProps {
+  title: string;
   recipes: Array<IRecipe>;
   removeRecipe: (recipeId: string) => void;
 }
 
-export const List = ({recipes, removeRecipe}: CustomTableProps) => {
+export const List: FC<CustomTableProps> = ({title, recipes, removeRecipe}) => {
   return (
     <Wrapper>
       <Card>
-        <ListTitle>List Title</ListTitle>
+        <ListTitle>{title}</ListTitle>
         <Table>
           <TableHeader headers={headers}/>
           <tbody>
@@ -59,7 +60,7 @@ const Wrapper = styled.div`
 `;
 
 const ListTitle = styled.p`
-  margin: 1em 1em 0 1em;
+  margin: 1em 1em 0.5em;
   font-size: 1.4em;
   font-weight: 500;
   line-height: 1.6;

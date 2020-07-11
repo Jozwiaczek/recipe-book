@@ -1,20 +1,16 @@
-import React from 'react';
-import {IconButton} from './IconButton';
-import {DeleteForever, KeyboardArrowDown, ExpandLess} from '@styled-icons/material';
-import {useHistory} from 'react-router-dom';
-import {IRecipe} from '../../services/RecipeService';
-import {styled} from './layout/Theme';
+import React, {FC} from 'react';
+import {IconButton} from '../buttons/IconButton';
+import {DeleteForever, ExpandLess, KeyboardArrowDown} from '@styled-icons/material';
+import {IRecipe} from '../../../services/RecipeService';
+import {styled} from '../layout/Theme';
 
 interface TableRowProps {
   recipe: IRecipe;
   removeRecipe: (recipeId: string) => void;
 }
 
-export const TableRow = ({removeRecipe, recipe}: TableRowProps) => {
+export const TableRow: FC<TableRowProps> = ({removeRecipe, recipe}) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const history = useHistory();
-
-  // <tr key={key} onClick={() => history.push(`/edit/${recipe.id}`)}>
 
   return (
     <>
@@ -46,8 +42,6 @@ export const TableRow = ({removeRecipe, recipe}: TableRowProps) => {
           {recipe.ingredients.map((ingredient, key) => (
             <p key={key}>{ingredient.name}</p>
           ))}
-          <button onClick={() => history.push(`/edit/${recipe.id}`)}>Edit</button>
-          <button style={{backgroundColor: 'red'}} onClick={() => removeRecipe(recipe.id)}>Remove</button>
         </Cell>
       </CollapseRow>
     </>

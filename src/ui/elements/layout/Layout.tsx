@@ -1,7 +1,7 @@
 import React from 'react';
 import {createGlobalStyle} from 'styled-components';
 import Theme, {ITheme, styled} from './Theme';
-import {INavBarItems, NavBar} from '../NavBar';
+import {INavBarItems, NavBar} from './NavBar';
 
 const GlobalStyle = createGlobalStyle<{theme: ITheme}>`
   body {
@@ -18,13 +18,14 @@ const GlobalStyle = createGlobalStyle<{theme: ITheme}>`
 
 const StyledWrapper = styled.div`
   height: 100vh;
+  padding-top: ${props => props.theme.sizes.navbarHeight};;
   background-color: ${props => props.theme.palette.background.default};
   position: relative;
 `;
 
 const navBarItems: INavBarItems = {
   main: {
-    title: 'Recipes',
+    title: 'Recipe Book',
     link: '/'
   },
   menuItems: []

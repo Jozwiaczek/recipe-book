@@ -2,6 +2,11 @@ import React from 'react';
 import baseStyled, {ThemeProvider, ThemedStyledInterface} from 'styled-components';
 
 const theme = {
+  sizes: {
+    navbarHeight: '3.5em',
+    borderRadius: '6px',
+    margin: 10
+  },
   palette: {
     primary: {
       light: '#4791db',
@@ -41,6 +46,9 @@ const theme = {
       disabled: 'rgba(0, 0, 0, 0.38)'
     },
     action: {
+      active: 'rgba(0, 0, 0, 0.54)',
+      hover: 'rgba(0, 0, 0, 0.04)',
+      selected: 'rgba(0, 0, 0, 0.08)',
       disabled: 'rgba(0, 0, 0, 0.26)',
       disabledBackground: 'rgba(0, 0, 0, 0.12)'
     },
@@ -48,7 +56,7 @@ const theme = {
       default: '#fafafa',
       paper: '#fff'
     },
-    divider: 'rgba(0, 0, 0, 0.12)'
+    divider: 'rgba(0,0,0,0.24)'
   },
 };
 

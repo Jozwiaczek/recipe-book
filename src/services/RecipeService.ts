@@ -1,13 +1,13 @@
 import uniqid from 'uniqid';
 
-export interface Ingredient {
+export interface IIngredient {
   name: string;
 }
 
 export interface IRecipe {
   id: string;
   title: string;
-  ingredients: Array<Ingredient>;
+  ingredients: Array<IIngredient>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,7 +15,7 @@ export interface IRecipe {
 export interface IFormRecipe {
   id?: string;
   title: string;
-  ingredients: Array<Ingredient>;
+  ingredients: Array<IIngredient>;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -35,7 +35,7 @@ export class RecipeService {
     const recipes = this.getRecipes();
     const recipe = recipes.find(recipe => recipe.id === recipeId);
     if (!recipe) {
-      throw new Error('No specific stored recipe');
+      throw new Error('No specific recipe stored');
     }
     return recipe;
   }
@@ -56,7 +56,7 @@ export class RecipeService {
     });
 
     if (!isChanged) {
-      throw new Error('Provided recipe doesnt exists');
+      throw new Error('No specific recipe stored');
     }
 
     localStorage.setItem('recipes', JSON.stringify(changedRecipes));
@@ -74,7 +74,7 @@ export class RecipeService {
 
     recipes.map(storedRecipe => {
       if (storedRecipe.title === recipe.title) {
-        throw new Error('Recipe with equal value already exists');
+        throw new Error('Recipe with equal title already exists');
       }
     });
 

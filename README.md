@@ -10,4 +10,4 @@
 - React Testing Library with example `HiddenMessage` [component](src/ui/HiddenMessage.tsx) and [test](test/HiddenMessage.test.tsx).
 - CI with Github Actions
 
-- 
+- Test CI

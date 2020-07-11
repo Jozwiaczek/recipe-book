@@ -3,12 +3,15 @@ import {hot} from 'react-hot-loader/root';
 import {BrowserRouter as Router} from 'react-router-dom';
 import {RecipeList} from './components/RecipeList';
 import {Layout} from './elements/layout/Layout';
+import {ViewportProvider} from '../hooks/useMediaQuery';
 
 const App: React.FC = () => (
   <Router>
-    <Layout>
-      <RecipeList/>
-    </Layout>
+    <ViewportProvider>
+      <Layout>
+        <RecipeList/>
+      </Layout>
+    </ViewportProvider>
   </Router>
 );
 

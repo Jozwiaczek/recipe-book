@@ -5,8 +5,9 @@ import {Add} from '@styled-icons/material';
 import {IconButton} from '../elements/buttons/IconButton';
 import {List} from '../elements/list/List';
 import {RecipeModal} from '../elements/modals/RecipeModal';
+import useMediaQuery from '../../hooks/useMediaQuery';
 
-const headers = [
+const preHeaders = [
   {
     name: 'Title',
     value: 'title'
@@ -20,8 +21,8 @@ const headers = [
     value: 'createdAt'
   },
   {
-    name: '',
-    value: ''
+    name: 'Actions',
+    value: 'actions'
   }
 ];
 
@@ -32,11 +33,21 @@ export const RecipeList: React.FC = () => {
   const [currentlyEditedRecipe, setEditedRecipe] = useState<Partial<IFormRecipe> | undefined>();
   const [recipes, setRecipes] = useState<Array<IRecipe>>(recipeService.getRecipes());
   const [refresh, setRefresh] = React.useState<boolean>(false);
+  const [headers, setHeaders] = React.useState(preHeaders);
+  const {isMobile} = useMediaQuery();
 
   useEffect(() => {
     setRecipes(recipeService.getRecipes());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
+
+  useEffect(() => {
+    if (isMobile) {
+      setHeaders(preHeaders.filter(header => header.value !== 'updatedAt' && header.value !== 'createdAt'));
+    } else {
+      setHeaders(preHeaders);
+    }
+  }, [isMobile]);
 
   const openEditRecipe = (recipe: IFormRecipe): void => {
     setEditedRecipe(recipe);
@@ -80,23 +91,25 @@ export const RecipeList: React.FC = () => {
   return (
     <>
       <Blur isBlurred={isCreateModalVisible}>
-        {recipes.length > 0
-          ? <>
-            <ActionsSection>
+        {
+          recipes.length > 0
+            ? <>
+              <ActionsSection>
+                <CreateButton/>
+              </ActionsSection>
+              <List
+                title='Recipes'
+                headers={headers}
+                recipes={recipes}
+                removeRecipe={removeRecipe}
+                openEditRecipe={openEditRecipe}
+              />
+            </>
+            : <EmptyListContainer>
+              <EmptyTitle>No results found</EmptyTitle>
               <CreateButton/>
-            </ActionsSection>
-            <List
-              title='Recipes'
-              headers={headers}
-              recipes={recipes}
-              removeRecipe={removeRecipe}
-              openEditRecipe={openEditRecipe}
-            />
-          </>
-          : <EmptyListContainer>
-            <EmptyTitle>No results found</EmptyTitle>
-            <CreateButton/>
-          </EmptyListContainer>}
+            </EmptyListContainer>
+        }
       </Blur>
       <RecipeModal
         formTitle='Create Recipe'
@@ -118,6 +131,7 @@ export const RecipeList: React.FC = () => {
 const EmptyTitle = styled.p`
   margin-bottom: 30px;
   font-size: 3em;
+  text-align: center;
 `;
 
 const EmptyListContainer = styled.div`

@@ -42,7 +42,6 @@ const HeaderCell = styled.td`
 const HeaderTitle = styled.p`
   position: relative;
   padding-right: ${props => props.theme.sizes.margin * 1.4}px;
-  width: fit-content;
   line-height: normal;
   color: #333740;
 `;

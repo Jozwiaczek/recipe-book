@@ -15,6 +15,7 @@ interface IngredientFieldProps {
 const required = (value: string|undefined) => (value ? undefined : 'Required');
 
 export const IngredientField: FC<IngredientFieldProps> = ({index, name, removeItem, addItem, itemsSize}) => {
+
   return (
     <Wrapper>
       <Field<string>

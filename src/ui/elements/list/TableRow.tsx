@@ -3,6 +3,7 @@ import {IconButton} from '../buttons/IconButton';
 import {DeleteForever, ExpandLess, KeyboardArrowDown} from '@styled-icons/material';
 import {IFormRecipe, IRecipe} from '../../../services/RecipeService';
 import {styled} from '../layout/Theme';
+import useMediaQuery from '../../../hooks/useMediaQuery';
 
 interface TableRowProps {
   recipe: IRecipe;
@@ -12,6 +13,9 @@ interface TableRowProps {
 
 export const TableRow: FC<TableRowProps> = ({removeRecipe, recipe, openEditRecipe}) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const {br, isMobile} = useMediaQuery();
+
+  console.log(br);
 
   const onRowClick = (): void => {
     openEditRecipe(recipe);
@@ -25,6 +29,20 @@ export const TableRow: FC<TableRowProps> = ({removeRecipe, recipe, openEditRecip
   const onRemoveButtonClick = (e: React.MouseEvent): void => {
     e.stopPropagation();
     removeRecipe(recipe.id);
+  };
+
+  const DeleteIconButton: FC = () => {
+    if (isMobile) {
+      return (
+        <DeleteForever onClick={onRemoveButtonClick} color={'red'} size='32'/>
+      );
+    }
+    return (
+      <IconButton color='secondary' onClick={onRemoveButtonClick}>
+        <DeleteForever size='24'/>
+          Remove
+      </IconButton>
+    );
   };
 
   return (
@@ -41,19 +59,20 @@ export const TableRow: FC<TableRowProps> = ({removeRecipe, recipe, openEditRecip
           {recipe.title}
         </Cell>
 
+        {!isMobile &&
         <Cell>
           {new Date(recipe.updatedAt).toLocaleDateString()}
         </Cell>
+        }
 
+        {!isMobile &&
         <Cell>
           {new Date(recipe.createdAt).toLocaleDateString()}
         </Cell>
+        }
 
         <Cell>
-          <IconButton color='secondary' onClick={onRemoveButtonClick}>
-            <DeleteForever size='24'/>
-            Remove
-          </IconButton>
+          <DeleteIconButton/>
         </Cell>
       </Row>
 

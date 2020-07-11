@@ -73,7 +73,7 @@ const InputGroup = styled.div<InputGroupProps>`
   }
   
   & input:placeholder-shown + label {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     cursor: text;
     top: 20px;
   }

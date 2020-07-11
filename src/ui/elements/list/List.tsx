@@ -75,4 +75,8 @@ const Table = styled.table`
   overflow-x: scroll;
   border-spacing: 0;
   border-collapse: collapse;
+  
+  tr:nth-last-child(2) {
+    border-bottom: none;
+  }
 `;

@@ -20,7 +20,6 @@ const StyledWrapper = styled.div`
   height: 100vh;
   padding-top: ${props => props.theme.sizes.navbarHeight};;
   background-color: ${props => props.theme.palette.background.default};
-  position: relative;
 `;
 
 const navBarItems: INavBarItems = {

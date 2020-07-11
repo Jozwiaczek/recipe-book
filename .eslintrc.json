@@ -32,6 +32,7 @@
     "react-hooks"
   ],
   "rules": {
+    "jsx-quotes": [2, "prefer-single"],
     "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-member-accessibility": [

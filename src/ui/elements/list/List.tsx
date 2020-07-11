@@ -4,36 +4,19 @@ import {IRecipe} from '../../../services/RecipeService';
 import {TableRow} from './TableRow';
 import {styled} from '../layout/Theme';
 
-const headers = [
-  {
-    name: 'Title',
-    value: 'title',
-    isSortEnabled: true,
-  },
-  {
-    name: 'Updated At',
-    value: 'updatedAt',
-    isSortEnabled: true,
-  },
-  {
-    name: 'Created At',
-    value: 'createdAt',
-    isSortEnabled: true,
-  },
-  {
-    name: '',
-    value: '',
-    isSortEnabled: false,
-  }
-];
+export interface IHeader {
+  name: string;
+  value: string;
+}
 
 interface CustomTableProps {
   title: string;
   recipes: Array<IRecipe>;
   removeRecipe: (recipeId: string) => void;
+  headers: Array<IHeader>;
 }
 
-export const List: FC<CustomTableProps> = ({title, recipes, removeRecipe}) => {
+export const List: FC<CustomTableProps> = ({headers, title, recipes, removeRecipe}) => {
   return (
     <Wrapper>
       <Card>

@@ -15,11 +15,16 @@ interface RecipeCreateModalProps {
 }
 
 export const RecipeCreateModal: FC<RecipeCreateModalProps> = ({onSubmit, isVisible, closeModal}) => {
+  const submit = (values: FormRecipe): void => {
+    onSubmit(values);
+    closeModal();
+  };
+
   return (
     <Modal isVisible={isVisible} onClose={closeModal}>
       <h1>Create Recipe</h1>
       <Form
-        onSubmit={onSubmit}
+        onSubmit={submit}
         mutators={{
           ...arrayMutators
         }}
@@ -44,14 +49,14 @@ export const RecipeCreateModal: FC<RecipeCreateModalProps> = ({onSubmit, isVisib
         }) => (
           <form onSubmit={handleSubmit}>
             <Field<string>
-              name="title"
+              name='title'
               component={TextInput}
-              placeholder="Recipe Title"
+              placeholder='Recipe Title'
             />
             <br/>
             {
               values.ingredients?.length > 0
-                ? <FieldArray name="ingredients">
+                ? <FieldArray name='ingredients'>
                   {({fields}) =>
                     fields.map((name, key) => {
                       const index = key + 1;
@@ -80,8 +85,8 @@ export const RecipeCreateModal: FC<RecipeCreateModalProps> = ({onSubmit, isVisib
             <br/>
             <br/>
             <br/>
-            <div className="buttons">
-              <Button type="submit" color='primary' disabled={submitting || pristine}>Submit</Button>
+            <div className='buttons'>
+              <Button type='submit' color='primary' disabled={submitting || pristine}>Submit</Button>
               <Button
                 color='secondary'
                 disabled={submitting || pristine}

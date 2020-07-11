@@ -1,15 +1,10 @@
 import React, {FC} from 'react';
 import {styled} from '../layout/Theme';
 import {Row} from './TableRow';
-
-interface Header {
-  name: string;
-  value: string;
-  isSortEnabled: boolean;
-}
+import {IHeader} from './List';
 
 interface TableHeaderProps {
-  headers: Array<Header>;
+  headers: Array<IHeader>;
 }
 
 const TableHeader: FC<TableHeaderProps> = ({headers}) => {
@@ -18,7 +13,7 @@ const TableHeader: FC<TableHeaderProps> = ({headers}) => {
       <HeaderRow>
         <HeaderCell/>
         {
-          headers.map((header: Header, key: number) => {
+          headers.map((header, key) => {
             return (
               <HeaderCell key={key}>
                 <HeaderTitle>{header.name}</HeaderTitle>

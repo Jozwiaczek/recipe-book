@@ -2,13 +2,11 @@ import React from 'react';
 import {FieldRenderProps} from 'react-final-form';
 import {styled} from '../layout/Theme';
 
-type Props = FieldRenderProps<string>;
-
-const TextInput: React.FC<Props> = ({input, meta, ...rest}) => {
+const TextInput: React.FC<FieldRenderProps<string>> = ({input, meta, ...rest}) => {
   const {placeholder} = rest;
   return (
     <InputGroup isError={meta.touched && meta.error}>
-      <input type="input" {...input} {...rest}/>
+      <input type='input' {...input} {...rest}/>
       <label>{placeholder}</label>
       <span>{meta.touched ? meta.error : ''}</span>
     </InputGroup>

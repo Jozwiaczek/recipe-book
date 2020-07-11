@@ -6,6 +6,25 @@ import {Add} from '@styled-icons/material';
 import {IconButton} from '../elements/buttons/IconButton';
 import {List} from '../elements/list/List';
 
+const headers = [
+  {
+    name: 'Title',
+    value: 'title'
+  },
+  {
+    name: 'Updated At',
+    value: 'updatedAt'
+  },
+  {
+    name: 'Created At',
+    value: 'createdAt'
+  },
+  {
+    name: '',
+    value: ''
+  }
+];
+
 export const RecipeList: React.FC = () => {
   const [isCreateModal, setCreateModal] = useState<boolean>(false);
   const recipeService = new RecipeService();
@@ -26,7 +45,6 @@ export const RecipeList: React.FC = () => {
   };
 
   const onSubmit = (recipe: FormRecipe) => {
-    console.log('test');
     recipeService.createRecipe(recipe);
     setRefresh(prev => !prev);
   };
@@ -36,26 +54,50 @@ export const RecipeList: React.FC = () => {
     setRefresh(prev => !prev);
   };
 
+  const CreateButton = () =>
+    <IconButton color='primary' onClick={openCreateRecipe}>
+      <Add size='24'/>
+        Create recipe
+    </IconButton>;
+
   return (
     <>
       <Blur isBlurred={isCreateModal}>
-        <ActionsSection>
-          <IconButton color='primary' onClick={openCreateRecipe}>
-            <Add size="24"/>
-            Create recipe
-          </IconButton>
-        </ActionsSection>
-        <List title='Recipes' recipes={recipes} removeRecipe={removeRecipe}/>
+        {recipes.length > 0
+          ? <>
+            <ActionsSection>
+              <CreateButton/>
+            </ActionsSection>
+            <List title='Recipes' headers={headers} recipes={recipes} removeRecipe={removeRecipe}/>
+          </>
+          : <EmptyListContainer>
+            <EmptyTitle>No results found</EmptyTitle>
+            <CreateButton/>
+          </EmptyListContainer>}
       </Blur>
       <RecipeCreateModal isVisible={isCreateModal} closeModal={closeCreateRecipe} onSubmit={onSubmit}/>
     </>
   );
 };
 
+const EmptyTitle = styled.p`
+  margin-bottom: 30px;
+  font-size: 3em;
+`;
+
+const EmptyListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 40vh;
+`;
+
 const ActionsSection = styled.div`
    display: flex;
    justify-content: flex-end;
-   align-content: center;
+   align-items: center;
    width: 100%;
    padding: 20px 40px 0 20px;
 `;

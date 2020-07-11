@@ -24,8 +24,8 @@ export const IngredientField: FC<IngredientFieldProps> = ({index, name, removeIt
         placeholder={`Ingredient #${index}`}
       />
       <ActionButtons>
-        <DeleteButton onClick={removeItem} size="32"/>
-        {index === itemsSize && <AddButton onClick={addItem} size="32"/>}
+        <DeleteButton onClick={removeItem} size='32'/>
+        {index === itemsSize && <AddButton onClick={addItem} size='32'/>}
       </ActionButtons>
     </Wrapper>
   );

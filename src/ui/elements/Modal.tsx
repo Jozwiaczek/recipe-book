@@ -39,7 +39,7 @@ export const Modal: FC<ModalProps> = ({
         <ModalOverlay onClick={onClose}/>
         <ModalBodyWrapper>
           <ModalBody>
-            {onClose && <CloseButton onClick={onClose} size="36"/>}
+            {onClose && <CloseButton onClick={onClose} size='36'/>}
             {children}
           </ModalBody>
         </ModalBodyWrapper>

@@ -1,13 +1,2 @@
-# Docs
-
-- Webpack based
-- Babel transpiration
-- Hot Reloading
-- Styled Components
-- ESLint
-- Jest with mocks set up for images and styles
-- Chai assertions
-- React Testing Library with example `HiddenMessage` [component](src/ui/HiddenMessage.tsx) and [test](test/HiddenMessage.test.tsx).
-- CI with Github Actions
-
-- 
+# Intent interview task
+![CI](https://github.com/Jozwiaczek/intent-interview-task/workflows/Test%20and%20build/badge.svg)

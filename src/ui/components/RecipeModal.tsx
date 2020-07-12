@@ -8,6 +8,7 @@ import {Button} from '../elements/buttons/Button';
 import {Modal} from '../elements/Modal';
 import {IngredientField} from '../elements/forms/IngredientField';
 import {IShowToast, ToastConsumer} from '../elements/Toast';
+import {styled} from '../elements/layout/Theme';
 
 interface RecipeModalProps {
   onSubmit: (recipe: IFormRecipe) => void;
@@ -61,13 +62,12 @@ export const RecipeModal: FC<RecipeModalProps> = ({formTitle, initialValues, onS
               submitting,
               values
             }) => (
-              <form onSubmit={handleSubmit}>
+              <FormWrapper onSubmit={handleSubmit}>
                 <Field<string>
                   name='title'
                   component={TextInput}
                   placeholder='Recipe Title'
                 />
-                <br/>
                 {
                             values.ingredients?.length > 0
                               ? <FieldArray name='ingredients'>
@@ -87,19 +87,16 @@ export const RecipeModal: FC<RecipeModalProps> = ({formTitle, initialValues, onS
                                   })
                                 }
                               </FieldArray>
-                              : <Button
+                              : <AddIngredientsButton
                                 color='primary'
                                 disabled={submitting || pristine}
                                 onClick={() => push('ingredients', undefined)}
                                 style={{cursor: 'pointer'}}
                               >
                                     Add Ingredients
-                              </Button>
+                              </AddIngredientsButton>
                 }
-                <br/>
-                <br/>
-                <br/>
-                <div className='buttons'>
+                <FormActionSection>
                   <Button type='submit' color='primary' disabled={submitting || pristine}>Submit</Button>
                   <Button
                     color='secondary'
@@ -108,8 +105,8 @@ export const RecipeModal: FC<RecipeModalProps> = ({formTitle, initialValues, onS
                   >
                                 Reset
                   </Button>
-                </div>
-              </form>
+                </FormActionSection>
+              </FormWrapper>
             )}
           />
         </Modal>
@@ -117,3 +114,19 @@ export const RecipeModal: FC<RecipeModalProps> = ({formTitle, initialValues, onS
     </ToastConsumer>
   );
 };
+
+const AddIngredientsButton = styled(Button)`
+  margin-top: 25px;
+`;
+
+const FormWrapper = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`;
+
+const FormActionSection = styled.div`
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-evenly;
+`;

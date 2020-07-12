@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {IconButton} from '../elements/buttons/IconButton';
-import {DeleteForever, ExpandLess, KeyboardArrowDown} from '@styled-icons/material';
+import {DeleteForever, Edit, ExpandLess, KeyboardArrowDown} from '@styled-icons/material';
 import {IFormRecipe, IRecipe} from '../../services/RecipeService';
 import {styled} from '../elements/layout/Theme';
 import useMediaQuery from '../../hooks/useMediaQuery';
@@ -20,10 +20,6 @@ export const RecipeRow: FC<TableRowProps> = ({removeRecipe, recipe, openEditReci
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const {isMobile} = useMediaQuery();
 
-  const onRowClick = (): void => {
-    openEditRecipe(recipe);
-  };
-
   const onExpandButtonClick = (e: React.MouseEvent): void => {
     e.stopPropagation();
     setIsOpen(prevState => !prevState);
@@ -34,6 +30,10 @@ export const RecipeRow: FC<TableRowProps> = ({removeRecipe, recipe, openEditReci
     removeRecipe(recipe.id);
   };
 
+  const onEditButtonClick = (e: React.MouseEvent): void => {
+    e.stopPropagation();
+    openEditRecipe(recipe);
+  };
 
   const DeleteIconButton: FC<IDeleteIconButton> = ({showToast}) => {
     const remove = (e: React.MouseEvent): void => {
@@ -43,13 +43,31 @@ export const RecipeRow: FC<TableRowProps> = ({removeRecipe, recipe, openEditReci
 
     if (isMobile) {
       return (
-        <DeleteForever onClick={remove} color={'red'} size='32'/>
+        <DeleteForever onClick={remove} color={'#dc004e'} size='32'/>
       );
     }
     return (
       <IconButton color='secondary' onClick={remove}>
-        <DeleteForever size='24'/>
-          Remove
+        <DeleteForever size='22'/>
+        &nbsp;Remove
+      </IconButton>
+    );
+  };
+
+  const EditIconButton: FC = () => {
+    const edit = (e: React.MouseEvent): void => {
+      onEditButtonClick(e);
+    };
+
+    if (isMobile) {
+      return (
+        <Edit onClick={edit} color={'#1976d2'} size='32'/>
+      );
+    }
+    return (
+      <IconButton color='primary' onClick={edit}>
+        <Edit size='22'/>
+          &nbsp;Edit
       </IconButton>
     );
   };
@@ -58,11 +76,11 @@ export const RecipeRow: FC<TableRowProps> = ({removeRecipe, recipe, openEditReci
     <ToastConsumer>
       {({showToast}) =>
         <>
-          <Row open={isOpen} onClick={onRowClick}>
+          <Row open={isOpen} onClick={onExpandButtonClick}>
             <ExpandButtonCell>
               {isOpen
-                ? <ArrowUpIcon onClick={onExpandButtonClick} size='24'/>
-                : <ArrowDownIcon onClick={onExpandButtonClick} size='24'/>
+                ? <ArrowUpIcon size='24'/>
+                : <ArrowDownIcon size='24'/>
               }
             </ExpandButtonCell>
 
@@ -82,9 +100,10 @@ export const RecipeRow: FC<TableRowProps> = ({removeRecipe, recipe, openEditReci
         </Cell>
             }
 
-            <Cell>
+            <ActionsCell>
+              <EditIconButton/>
               <DeleteIconButton showToast={showToast}/>
-            </Cell>
+            </ActionsCell>
           </Row>
 
           <CollapseRow open={isOpen}>
@@ -130,6 +149,13 @@ const Cell = styled.td`
   padding-left: 20px;
 `;
 
+const ActionsCell = styled(Cell)`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 300px;
+`;
+
 const ExpandButtonCell = styled(Cell)`
   width: 10px;
 `;
@@ -142,7 +168,6 @@ const CollapseCell = styled.td`
 const CollapseRow = styled(Row)<IRow>`
     visibility: ${props => !props.open && 'collapse'};
     line-height: ${props => props.open ? '2' : 0};
-    transition: visibility 0.2s ease-in-out;
     border-bottom: 1px solid ${props => props.theme.palette.divider};
 `;
 

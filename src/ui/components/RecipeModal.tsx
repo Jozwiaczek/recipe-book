@@ -65,6 +65,7 @@ export const RecipeModal: FC<RecipeModalProps> = ({formTitle, initialValues, onS
             }) => (
               <FormWrapper onSubmit={handleSubmit}>
                 <Field<string>
+                  autoFocus
                   name='title'
                   component={TextInput}
                   placeholder='Recipe Title'

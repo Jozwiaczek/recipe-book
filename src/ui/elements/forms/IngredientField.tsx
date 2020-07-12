@@ -12,15 +12,12 @@ interface IngredientFieldProps {
   itemsSize?: number;
 }
 
-const required = (value: string|undefined) => (value ? undefined : 'Required');
-
 export const IngredientField: FC<IngredientFieldProps> = ({index, name, removeItem, addItem, itemsSize}) => {
 
   return (
     <Wrapper>
       <Field<string>
         name={`${name}.name`}
-        validate={required}
         component={TextInput}
         placeholder={`Ingredient #${index}`}
       />

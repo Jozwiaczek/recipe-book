@@ -31,6 +31,7 @@ const validate = (values: IFormRecipe) => {
 export const RecipeModal: FC<RecipeModalProps> = ({formTitle, initialValues, onSubmit, isVisible, closeModal}) => {
   const submit = (values: IFormRecipe, showToast?: IShowToast): void => {
     try {
+      values.ingredients = values.ingredients?.filter((ingredient) => ingredient && ingredient.name);
       onSubmit(values);
       showToast && showToast('New Recipe added successfully!', 'success');
     } catch (e) {
@@ -89,7 +90,7 @@ export const RecipeModal: FC<RecipeModalProps> = ({formTitle, initialValues, onS
                               </FieldArray>
                               : <AddIngredientsButton
                                 color='primary'
-                                disabled={submitting || pristine}
+                                disabled={submitting}
                                 onClick={() => push('ingredients', undefined)}
                                 style={{cursor: 'pointer'}}
                               >

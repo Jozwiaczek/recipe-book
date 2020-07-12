@@ -1,18 +1,11 @@
-# Intent interview task
-![CI](https://github.com/Jozwiaczek/intent-interview-task/workflows/Test%20and%20build/badge.svg)
+# Recipe Book App ![CI](https://github.com/Jozwiaczek/intent-interview-task/workflows/Test%20and%20build/badge.svg) [![Netlify Status](https://api.netlify.com/api/v1/badges/5b8219ad-0e6c-4c44-99f3-4beac8b7e2cc/deploy-status)](https://app.netlify.com/sites/quirky-euclid-3c344a/deploys)
 
-## TODO
-- [ ] Deploy the app on Netlify
-- [ ] Docs
+[Live App](https://quirky-euclid-3c344a.netlify.app/)
 
-## Job openings
-[Fullstack](https://intent.recruitee.com/o/senior-fullstack-developer)
+## How to run
 
-[Front-end](https://intent.recruitee.com/o/frontend-developer-1)
+```
+yarn install
 
-## Questions
-- Jakich komputerów używają?
-- Jak często są podwyżki oraz czy są systematyczne rozmowy okresowe?
-- Czy biorą udziały w hackathonach?
-- Jeszcze raz jak wygląda praca zdalna?
-- Start dopiero we wrzesniu?
+yarn start
+```

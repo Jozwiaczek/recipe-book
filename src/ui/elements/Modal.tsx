@@ -1,7 +1,7 @@
 import React, {ReactNode, useEffect, useCallback, FC} from 'react';
 import {createPortal} from 'react-dom';
 import {Close} from '@styled-icons/material';
-import {styled} from '../layout/Theme';
+import {styled} from './layout/Theme';
 
 export interface ModalProps {
   isVisible: boolean;
@@ -58,7 +58,7 @@ const ModalView = styled.div`
   bottom: 0;
   width: 100%;
   height: 100%;
-  z-index: 9999;
+  z-index: 8000;
 `;
 
 const ModalOverlay = styled.div`

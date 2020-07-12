@@ -1,9 +1,10 @@
 import React, {FC} from 'react';
-import {IconButton} from '../buttons/IconButton';
+import {IconButton} from '../elements/buttons/IconButton';
 import {DeleteForever, ExpandLess, KeyboardArrowDown} from '@styled-icons/material';
-import {IFormRecipe, IRecipe} from '../../../services/RecipeService';
-import {styled} from '../layout/Theme';
-import useMediaQuery from '../../../hooks/useMediaQuery';
+import {IFormRecipe, IRecipe} from '../../services/RecipeService';
+import {styled} from '../elements/layout/Theme';
+import useMediaQuery from '../../hooks/useMediaQuery';
+import {IShowToast, ToastConsumer} from '../elements/Toast';
 
 interface TableRowProps {
   recipe: IRecipe;
@@ -11,11 +12,13 @@ interface TableRowProps {
   openEditRecipe: (recipe: IFormRecipe) => void;
 }
 
-export const TableRow: FC<TableRowProps> = ({removeRecipe, recipe, openEditRecipe}) => {
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const {br, isMobile} = useMediaQuery();
+interface IDeleteIconButton {
+  showToast: IShowToast|undefined;
+}
 
-  console.log(br);
+export const RecipeRow: FC<TableRowProps> = ({removeRecipe, recipe, openEditRecipe}) => {
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const {isMobile} = useMediaQuery();
 
   const onRowClick = (): void => {
     openEditRecipe(recipe);
@@ -31,14 +34,20 @@ export const TableRow: FC<TableRowProps> = ({removeRecipe, recipe, openEditRecip
     removeRecipe(recipe.id);
   };
 
-  const DeleteIconButton: FC = () => {
+
+  const DeleteIconButton: FC<IDeleteIconButton> = ({showToast}) => {
+    const remove = (e: React.MouseEvent): void => {
+      onRemoveButtonClick(e);
+      showToast && showToast('Recipe removed!', 'success');
+    };
+
     if (isMobile) {
       return (
-        <DeleteForever onClick={onRemoveButtonClick} color={'red'} size='32'/>
+        <DeleteForever onClick={remove} color={'red'} size='32'/>
       );
     }
     return (
-      <IconButton color='secondary' onClick={onRemoveButtonClick}>
+      <IconButton color='secondary' onClick={remove}>
         <DeleteForever size='24'/>
           Remove
       </IconButton>
@@ -46,47 +55,54 @@ export const TableRow: FC<TableRowProps> = ({removeRecipe, recipe, openEditRecip
   };
 
   return (
-    <>
-      <Row open={isOpen} onClick={onRowClick}>
-        <ExpandButtonCell>
-          {isOpen
-            ? <ArrowUpIcon onClick={onExpandButtonClick} size='24'/>
-            : <ArrowDownIcon onClick={onExpandButtonClick} size='24'/>
-          }
-        </ExpandButtonCell>
+    <ToastConsumer>
+      {({showToast}) =>
+        <>
+          <Row open={isOpen} onClick={onRowClick}>
+            <ExpandButtonCell>
+              {isOpen
+                ? <ArrowUpIcon onClick={onExpandButtonClick} size='24'/>
+                : <ArrowDownIcon onClick={onExpandButtonClick} size='24'/>
+              }
+            </ExpandButtonCell>
 
-        <Cell>
-          {recipe.title}
-        </Cell>
+            <Cell>
+              {recipe.title}
+            </Cell>
 
-        {!isMobile &&
+            {!isMobile &&
         <Cell>
           {new Date(recipe.updatedAt).toLocaleDateString()}
         </Cell>
-        }
+            }
 
-        {!isMobile &&
+            {!isMobile &&
         <Cell>
           {new Date(recipe.createdAt).toLocaleDateString()}
         </Cell>
-        }
+            }
 
-        <Cell>
-          <DeleteIconButton/>
-        </Cell>
-      </Row>
+            <Cell>
+              <DeleteIconButton showToast={showToast}/>
+            </Cell>
+          </Row>
 
-      <CollapseRow open={isOpen}>
-        <CollapseCell colSpan={5}>
-          <IngredientsListTitle>Ingredients</IngredientsListTitle>
-          <IngredientsList>
-            {recipe.ingredients?.map((ingredient, key) => (
-              <li key={key}>{ingredient.name}</li>
-            ))}
-          </IngredientsList>
-        </CollapseCell>
-      </CollapseRow>
-    </>
+          <CollapseRow open={isOpen}>
+            <CollapseCell colSpan={5}>
+              <IngredientsListTitle>Ingredients</IngredientsListTitle>
+              <IngredientsList>
+                { recipe.ingredients?.length > 0
+                  ? recipe.ingredients.map((ingredient, key) => (
+                    <li key={key}>{ingredient.name}</li>
+                  ))
+                  : <p>This recipe doesn&rsquo;t have any ingredients</p>
+                }
+              </IngredientsList>
+            </CollapseCell>
+          </CollapseRow>
+        </>
+      }
+    </ToastConsumer>
   );
 };
 

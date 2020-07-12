@@ -2,18 +2,11 @@
 ![CI](https://github.com/Jozwiaczek/intent-interview-task/workflows/Test%20and%20build/badge.svg)
 
 ## TODO
-- [ ] Unit test for Recipe service
 - [ ] Simple React unit tests
-- [ ] Add Redux/Context
-- [ ] Check handle errors
-- [ ] Check fonts
 - [ ] Setup of Storybook with elements
 - [ ] Deploy the app on Netlify
 - [ ] Add an auto add new ingredient
 - [ ] Docs
-- [ ] Split components
-- [ ] Check types
-- [ ] Check requirements
 
 ## In free time
 - [ ] Add docker

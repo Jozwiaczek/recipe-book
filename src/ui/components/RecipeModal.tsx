@@ -2,11 +2,12 @@ import React, {FC} from 'react';
 import {Field, Form} from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import {FieldArray} from 'react-final-form-arrays';
-import TextInput from '../forms/TextInput';
-import {IFormRecipe} from '../../../services/RecipeService';
-import {Button} from '../buttons/Button';
-import {Modal} from './Modal';
-import {IngredientField} from '../forms/IngredientField';
+import TextInput from '../elements/forms/TextInput';
+import {IFormRecipe} from '../../services/RecipeService';
+import {Button} from '../elements/buttons/Button';
+import {Modal} from '../elements/Modal';
+import {IngredientField} from '../elements/forms/IngredientField';
+import {IShowToast, ToastConsumer} from '../elements/Toast';
 
 interface RecipeModalProps {
   onSubmit: (recipe: IFormRecipe) => void;
@@ -27,39 +28,47 @@ const validate = (values: IFormRecipe) => {
 };
 
 export const RecipeModal: FC<RecipeModalProps> = ({formTitle, initialValues, onSubmit, isVisible, closeModal}) => {
-  const submit = (values: IFormRecipe): void => {
-    onSubmit(values);
-    closeModal();
+  const submit = (values: IFormRecipe, showToast?: IShowToast): void => {
+    try {
+      onSubmit(values);
+      showToast && showToast('New Recipe added successfully!', 'success');
+    } catch (e) {
+      showToast && showToast(`Error: ${e.message}`, 'error');
+    } finally {
+      closeModal();
+    }
   };
 
   return (
-    <Modal isVisible={isVisible} onClose={closeModal}>
-      <h1>{formTitle}</h1>
-      <Form
-        onSubmit={submit}
-        mutators={{
-          ...arrayMutators
-        }}
-        validate={validate}
-        initialValues={initialValues}
-        render={({
-          handleSubmit,
-          form: {
-            mutators: {push}
-          },
-          pristine,
-          form,
-          submitting,
-          values
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <Field<string>
-              name='title'
-              component={TextInput}
-              placeholder='Recipe Title'
-            />
-            <br/>
-            {
+    <ToastConsumer>
+      {({showToast}) =>
+        <Modal isVisible={isVisible} onClose={closeModal}>
+          <h1>{formTitle}</h1>
+          <Form
+            onSubmit={values => submit(values, showToast)}
+            mutators={{
+              ...arrayMutators
+            }}
+            validate={validate}
+            initialValues={initialValues}
+            render={({
+              handleSubmit,
+              form: {
+                mutators: {push}
+              },
+              pristine,
+              form,
+              submitting,
+              values
+            }) => (
+              <form onSubmit={handleSubmit}>
+                <Field<string>
+                  name='title'
+                  component={TextInput}
+                  placeholder='Recipe Title'
+                />
+                <br/>
+                {
                             values.ingredients?.length > 0
                               ? <FieldArray name='ingredients'>
                                 {({fields}) =>
@@ -86,23 +95,25 @@ export const RecipeModal: FC<RecipeModalProps> = ({formTitle, initialValues, onS
                               >
                                     Add Ingredients
                               </Button>
-            }
-            <br/>
-            <br/>
-            <br/>
-            <div className='buttons'>
-              <Button type='submit' color='primary' disabled={submitting || pristine}>Submit</Button>
-              <Button
-                color='secondary'
-                disabled={submitting || pristine}
-                onClick={() => form.reset()}
-              >
+                }
+                <br/>
+                <br/>
+                <br/>
+                <div className='buttons'>
+                  <Button type='submit' color='primary' disabled={submitting || pristine}>Submit</Button>
+                  <Button
+                    color='secondary'
+                    disabled={submitting || pristine}
+                    onClick={() => form.reset()}
+                  >
                                 Reset
-              </Button>
-            </div>
-          </form>
-        )}
-      />
-    </Modal>
+                  </Button>
+                </div>
+              </form>
+            )}
+          />
+        </Modal>
+      }
+    </ToastConsumer>
   );
 };

@@ -4,13 +4,16 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import {RecipeList} from './components/RecipeList';
 import {Layout} from './elements/layout/Layout';
 import {ViewportProvider} from '../hooks/useMediaQuery';
+import {ToastProvider} from './elements/Toast';
 
 const App: React.FC = () => (
   <Router>
     <ViewportProvider>
-      <Layout>
-        <RecipeList/>
-      </Layout>
+      <ToastProvider>
+        <Layout>
+          <RecipeList/>
+        </Layout>
+      </ToastProvider>
     </ViewportProvider>
   </Router>
 );

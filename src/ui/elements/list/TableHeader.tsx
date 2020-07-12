@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {styled} from '../layout/Theme';
-import {Row} from './TableRow';
+import {Row} from '../../components/RecipeRow';
 import {IHeader} from './List';
 
 interface TableHeaderProps {

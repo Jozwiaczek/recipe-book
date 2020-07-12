@@ -1,10 +1,10 @@
 import React, {createContext, FC, useContext, useEffect, useState} from 'react';
 
-interface IContext {
+interface IViewportContext {
   width: number;
 }
 
-const ViewportContext = createContext<IContext>({width: window.innerWidth});
+const ViewportContext = createContext<IViewportContext>({width: window.innerWidth});
 
 export const ViewportProvider: FC = ({children}) => {
   const [width, setWidth] = useState(window.innerWidth);

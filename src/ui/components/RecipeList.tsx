@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import styled from 'styled-components';
 import {IFormRecipe, IRecipe, RecipeService} from '../../services/RecipeService';
 import {Add} from '@styled-icons/material';
 import {IconButton} from '../elements/buttons/IconButton';
 import {List} from '../elements/list/List';
-import {RecipeModal} from '../elements/modals/RecipeModal';
+import {RecipeModal} from './RecipeModal';
 import useMediaQuery from '../../hooks/useMediaQuery';
+import {styled} from '../elements/layout/Theme';
 
 const preHeaders = [
   {
@@ -109,6 +109,7 @@ export const RecipeList: React.FC = () => {
               <EmptyTitle>No results found</EmptyTitle>
               <CreateButton/>
             </EmptyListContainer>
+
         }
       </Blur>
       <RecipeModal

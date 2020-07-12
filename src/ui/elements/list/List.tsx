@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import TableHeader from './TableHeader';
 import {IFormRecipe, IRecipe} from '../../../services/RecipeService';
-import {TableRow} from './TableRow';
+import {RecipeRow} from '../../components/RecipeRow';
 import {styled} from '../layout/Theme';
 
 export interface IHeader {
@@ -32,7 +32,7 @@ export const List: FC<CustomTableProps> = ({
           <TableHeader headers={headers}/>
           <tbody>
             {recipes.map((recipe, key: number) => (
-              <TableRow
+              <RecipeRow
                 key={key}
                 recipe={recipe}
                 removeRecipe={removeRecipe}
